@@ -1,6 +1,6 @@
 # Custom stuff
 
-./legacy/ # Legacy hadnwritten documentation
+legacy # Legacy hadnwritten documentation
 
 ## Core latex/pdflatex auxiliary files:
 *.aux

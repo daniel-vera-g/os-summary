@@ -114,4 +114,44 @@ Vorgang:
 
 > A process control Block(PCB) is a data structure used by computer operating systems to store all the information about a process. It is also known as a process descriptor.
 
-<!-- TODO migrate handwritten documentation in ../legacy -->
+### BS verwaltet Prozesse
+
+> Prozesse haben Zustände
+
+![zustaende](./img/zustaende.png)
+
+1. Initial: Prozess wurde erzeugt
+2. Ready: Prozess ist in der Lage ausgeführt zu werden
+3. Running: Prozess läuft(pro CPU ein Prozess)
+4. Blocked: Prozess wartet auf bestimmtes Ereignis(z.B. I/O)
+5. Final: Prozess beendet -> Es wird aufgeräumt
+
+Queues in denen PCB's verwaltet werden:
+
+1. **Ready Queue**: PCB Prozesse, die zur Ausfürung bereit wären
+2. **Event Queue**: Queue für jede Art von Ereignis(Plattenzugriff, ...)
+
+### Zusammenfassung CPU - Virtualisierung
+
+1. Limited direct execution:
+
+* Ausfürung bleibt schnell
+* BS behält kontolle
+
+2. Schnelle Kontextwechsel:
+
+* Eindruck als besäße jeder Prozess eigene CPU
+
+3. Hardware Unterstützung:
+
+* Protection Ring
+* Timer & Interrupts
+* Sicherung & Wiederherstellung v. Zustandsinfos(Register)
+
+<!-- TODO Prozesse & Erzeugung -->
+
+## Scheduling
+
+> Der Dispatcher führt Kontextwechsel durch, sichert und restauriert die Register, verwaltet die PCBs, usw... Dabei stehen viele Prozesse in der Ready Queue. Mit welchem soll jedoch der Kontextwechsel erfolgen?
+
+<!-- TODO WIP -->

@@ -154,4 +154,73 @@ Queues in denen PCB's verwaltet werden:
 
 > Der Dispatcher führt Kontextwechsel durch, sichert und restauriert die Register, verwaltet die PCBs, usw... Dabei stehen viele Prozesse in der Ready Queue. Mit welchem soll jedoch der Kontextwechsel erfolgen?
 
-<!-- TODO WIP -->
+Metriken zur Bewertung der Performance:
+
+1. Umlaufzeit: T_Umlauf = T_Ende - T_Ankunft
+2. Reaktionszeit: T_Reaktion = T_Start - T_Ankunft
+3. Durchsatz = (erledigte Aufgaben)/Zeit
+
+Berechnung der Fairness, nach Fairness-Index. Je näher dieser bei 1 ist, desto fairer.
+
+<!-- TODO Fairness formel mit latex -->
+
+### FIFO
+
+* Performance: Bei etwa gleichlanger Prozess & wenn dursch. Umlaufzeit wichtig ist, FIFO adäquate Strategie.
+* Problem: Dursch. Umlaufzeit steigt stark, wenn kurze Aufträge auf Beendigung langer Aufträge warten müssen.
+
+### SJF
+
+> Dursch. Umlaufzeit minimal gdw. Aufträge nach Dauer von kurz nach lang bearbeitet werden!
+
+* Performance: SJF nur optimal, wenn Aufgaben bereits vorliegen -> Prognosen schwierig!
+
+### STCF(Shortest Time to Completion First)
+
+> Aufgabe, die zuerst fertig wird, wird vorgezogen
+
+* _Präemptiv_: Scheduler kann einen beliebigen Job unterbrechen, um mit einem anderen(ggf. neuen) fortzufahren.
+* Performance: Wenn Dauer Aufgabe bekannt, dursch. Umlaufzeit minimal gdw. stets an Aufgabe weitergearbeitet wird, die zuerst abgeschlossen werden kann.
+
+> Anwender erwartet kurze Reaktionszeit:
+
+* Reaktionszeit(Response Time): T_Reaktion = T_Start - T_Ankunft
+* Performance bzglw. Reaktionszeit: Dursch. Reaktionszeit steigt stark sobald mehrere Prozesse(Jobs) zu bearbeiten sind!
+
+### Round Robin
+
+> Arbeiten mit **Zeitscheiben**, bei dem jeder Job eine Zeitscheibe zugeteilt wird.
+
+* Zuteilung wiederholt sich periodisch.
+* Je kleiner Zeitscheiben, desto größer der Eindruck der Gleichzeitigkeit
+
+==> Je kleiner Zeitscheiben, desto kürzer Reaktionszeit(=Eindruck der Gleichzeitigkeit)
+
+Zu beachten:
+
+1. Größe der Zeitscheiben ist begrenzt durch Auflösung des HW-Timers(HPET ~ 1ms)
+2. Kontextwechsel kostet Zeit(~1-1000µs)
+
+### Zusammenhang Reaktionszeit <-> Umlaufzeit
+
+> Was für Reaktionszeit gut, schlecht für Umlaufzeit & umgekehrt
+
+Umlaufzeit | Reaktionszeit
+---------- | ------------
+SJF | RR
+STJF | -
+
+### MLFQ(Multi-Level-Feedback-Queue)
+
+> Wissen aus Vergangenheit im Vorhersagen über Zukunft treffen um **Umlaufzeit & Reaktionszeit zu minimieren**
+
+1. Alle Jobs werden Priorisiert
+
+* Feste Anzahl an Queues, die ein definierten Prioritätslevel repräsentiert.
+* Nur Jobs mit höchster Priorität werden ausgeführt.
+* Scheduler = Round Robin
+
+2. Priorität wechseln
+
+<!-- WIP Slide 105 -->
+

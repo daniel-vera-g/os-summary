@@ -1,6 +1,3 @@
-
-{% include_relative ./toc.md %}
-
 # Grundlagen betriebssysteme
 
 > Abstrahiert und managet

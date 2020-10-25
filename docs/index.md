@@ -1,5 +1,7 @@
 # Grundlagen betriebssysteme
 
+{% include_relative ./toc.md %}
+
 > Abstrahiert und managet
 
 ![OS](./img/os.png)

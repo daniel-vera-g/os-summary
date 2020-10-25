@@ -9,8 +9,7 @@
       - [Dispatcher Loop](#dispatcher-loop)
     + [BS verwaltet Prozesse](#bs-verwaltet-prozesse)
     + [Zusammenfassung CPU - Virtualisierung](#zusammenfassung-cpu---virtualisierung)
-  * [Scheduling](#scheduling)
-
+  * [Scheduling](#scheduling) 
 # Grundlagen betriebssysteme
 
 > Abstrahiert und managet

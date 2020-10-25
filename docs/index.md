@@ -1,3 +1,6 @@
+
+{% include_relative ./toc.md %}
+
 # Grundlagen betriebssysteme
 
 > Abstrahiert und managet
@@ -214,6 +217,8 @@ STJF | -
 
 > Wissen aus Vergangenheit im Vorhersagen über Zukunft treffen um **Umlaufzeit & Reaktionszeit zu minimieren**
 
+TLDR: Es wird ein Round Robin System genutzt, bei dem die Zeitscheiben an der Priorität gekoppelt sind. Diese wird aus der Zeit entnommen, die diese für die abarbeitung brauchen.
+
 1. Alle Jobs werden Priorisiert
 
 * Feste Anzahl an Queues, die ein definierten Prioritätslevel repräsentiert.
@@ -222,5 +227,8 @@ STJF | -
 
 2. Priorität wechseln
 
-<!-- WIP Slide 105 -->
+* Jeder neue Job beginnt auf höchster Prioritätsstufe
+* Bei nutzung des gesamten Zeitschlitzes, wird die **Priorität abgestuft**
+* Bei nicht nutzung des gesamten Zeitschlitzes, wird die **Priorität behalten**
+
 

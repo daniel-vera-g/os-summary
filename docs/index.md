@@ -1,3 +1,16 @@
+- [Grundlagen betriebssysteme](#grundlagen-betriebssysteme)
+  * [Abstrahiert:](#abstrahiert)
+  * [Managet](#managet)
+- [Virtualisierung der CPU](#virtualisierung-der-cpu)
+  * [Programm ausführen](#programm-ausfuhren)
+    + [Limited direct execution](#limited-direct-execution)
+      - [Auf geschützte Funkt. zuzugreifen](#auf-geschutzte-funkt-zuzugreifen)
+    + [BS managet Prozesse](#bs-managet-prozesse)
+      - [Dispatcher Loop](#dispatcher-loop)
+    + [BS verwaltet Prozesse](#bs-verwaltet-prozesse)
+    + [Zusammenfassung CPU - Virtualisierung](#zusammenfassung-cpu---virtualisierung)
+  * [Scheduling](#scheduling)
+
 # Grundlagen betriebssysteme
 
 > Abstrahiert und managet
@@ -13,9 +26,9 @@ Standard Bibl. für:
 * Platte Dateien & Verzeichnisse
 * Netzwerk Sockets
 
-PRO | CON
---- | ---
-Nicht um Hardware Aufg. kümmern und bekommen einheitliche Geräteschnittstellen angeboten | Richt. Abstraktionslevel?
+    PRO | CON
+    --- | ---
+    Nicht um Hardware Aufg. kümmern und bekommen einheitliche Geräteschnittstellen angeboten | Richt. Abstraktionslevel?
  -   | Welche Funktionalität?
   -  | Wie viel Hardware sehen?
 
@@ -27,13 +40,13 @@ Teil Ressourcen zwisch. Anwender | Jede Anwend. hat Maschine für sich
 Schirm Anwendungen ab | Speicher unendlich
    - | Dateien beliebig wachsen
 
-PRO | CON
---- | ---
-Anwend. gegenseitig nicht stören -> Zuteilung Fair & effektiv! | Wie Abschirmung?
+       PRO | CON
+       --- | ---
+       Anwend. gegenseitig nicht stören -> Zuteilung Fair & effektiv! | Wie Abschirmung?
 - | Wie Hardware virtualisiert?
 - | Wie Faire Zuteilung?
 
-<!-- TODO Herausforderungen relevant ? (Folie 15 - 20) -->
+    <!-- TODO Herausforderungen relevant ? (Folie 15 - 20) -->
 
 # Virtualisierung der CPU
 
@@ -41,13 +54,13 @@ Anwend. gegenseitig nicht stören -> Zuteilung Fair & effektiv! | Wie Abschirmun
 
 * Prozesse: Sequentielle Ausführung eines Programms
   - Besteht aus:
-    1. Programm => Adressraum
-    2. Daten(Heap/Stack) => Adressraum
-    3. Register
-    4. Offene Dateien
-    5. Netzwerk Verbind.
+      1. Programm => Adressraum
+      2. Daten(Heap/Stack) => Adressraum
+      3. Register
+      4. Offene Dateien
+      5. Netzwerk Verbind.
 
-==> Werden im __PCB__ zusammengefasst!
+      ==> Werden im __PCB__ zusammengefasst!
 
 
 Prozess | Programm
@@ -70,7 +83,7 @@ Prozess `<!=>` Programm
   * Ändern Mode
   * Aktivierung/Deakt. Interrupts
 
-==> __Protection Ring__(Current Privilege Level) = Prozessor prüft ob Berecht. vorliegen bei jeder Instruktion
+      ==> __Protection Ring__(Current Privilege Level) = Prozessor prüft ob Berecht. vorliegen bei jeder Instruktion
 
 #### Auf geschützte Funkt. zuzugreifen
 
@@ -79,24 +92,24 @@ Prozess `<!=>` Programm
 * Falltür um auf Kernelebebene abzusteigen = **Trap Konstr.**
 * Interface um Funkt. auszuwählen:
 
-```assembly
-mov $0x4,%eax # Systemaufruf (4 = Linux write)
-int $0x80     # Wechsel in den Kernel Mode(Trap)
-```
+    ```assembly
+    mov $0x4,%eax # Systemaufruf (4 = Linux write)
+    int $0x80     # Wechsel in den Kernel Mode(Trap)
+    ```
 
-Vorgang:
+    Vorgang:
 
-<!-- TODO write out instead of image -->
-![Vorgang](./img/vorgang.png)
+    <!-- TODO write out instead of image -->
+    ![Vorgang](./img/vorgang.png)
 
-**Missachtung der Regeln**: BS terminiert Prozess
+    **Missachtung der Regeln**: BS terminiert Prozess
 
 ### BS managet Prozesse
 
 1. Mechanismus: Dispatcher
   * Wie Prozess angehalten?
   * Wie Prozess gestartet?
-2. Strategie: Scheduler
+      2. Strategie: Scheduler
   * Wann Prozess angehalten?
   * Mit welchem fortgefahren?
 
@@ -106,13 +119,13 @@ Vorgang:
   * Systemaufruf(I/O) findet regelmäßig statt
   * `yield()`
 
-=> Kein Zwang & fehlerhaft
+      => Kein Zwang & fehlerhaft
 
-2. Nicht Kooperativ: **Hardware Timer(HPET)** lösen in regelmäßige Abst.(~1ms) Interrupts aus.
+      2. Nicht Kooperativ: **Hardware Timer(HPET)** lösen in regelmäßige Abst.(~1ms) Interrupts aus.
 
-![Interrupt](./img/interrupt.png)
+      ![Interrupt](./img/interrupt.png)
 
-> A process control Block(PCB) is a data structure used by computer operating systems to store all the information about a process. It is also known as a process descriptor.
+      > A process control Block(PCB) is a data structure used by computer operating systems to store all the information about a process. It is also known as a process descriptor.
 
 ### BS verwaltet Prozesse
 
@@ -138,17 +151,17 @@ Queues in denen PCB's verwaltet werden:
 * Ausfürung bleibt schnell
 * BS behält kontolle
 
-2. Schnelle Kontextwechsel:
+    2. Schnelle Kontextwechsel:
 
 * Eindruck als besäße jeder Prozess eigene CPU
 
-3. Hardware Unterstützung:
+    3. Hardware Unterstützung:
 
 * Protection Ring
 * Timer & Interrupts
 * Sicherung & Wiederherstellung v. Zustandsinfos(Register)
 
-<!-- TODO Prozesse & Erzeugung -->
+    <!-- TODO Prozesse & Erzeugung -->
 
 ## Scheduling
 

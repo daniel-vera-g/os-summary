@@ -28,8 +28,8 @@ Standard Bibl. für:
     PRO | CON
     --- | ---
     Nicht um Hardware Aufg. kümmern und bekommen einheitliche Geräteschnittstellen angeboten | Richt. Abstraktionslevel?
- -   | Welche Funktionalität?
-  -  | Wie viel Hardware sehen?
+    .  | Welche Funktionalität?
+    . | Wie viel Hardware sehen?
 
 ## Managet
 
@@ -37,15 +37,17 @@ Moderator | Magier
 --------- | ------
 Teil Ressourcen zwisch. Anwender | Jede Anwend. hat Maschine für sich
 Schirm Anwendungen ab | Speicher unendlich
-   - | Dateien beliebig wachsen
+   . | Dateien beliebig wachsen
 
-       PRO | CON
-       --- | ---
-       Anwend. gegenseitig nicht stören -> Zuteilung Fair & effektiv! | Wie Abschirmung?
-- | Wie Hardware virtualisiert?
-- | Wie Faire Zuteilung?
+---
 
-    <!-- TODO Herausforderungen relevant ? (Folie 15 - 20) -->
+PRO | CON
+--- | ---
+Anwend. gegenseitig nicht stören -> Zuteilung Fair & effektiv! | Wie Abschirmung?
+. | Wie Hardware virtualisiert?
+. | Wie Faire Zuteilung?
+
+<!-- TODO Herausforderungen relevant ? (Folie 15 - 20) -->
 
 # Virtualisierung der CPU
 

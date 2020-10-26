@@ -216,16 +216,48 @@ STJF | -
 
 TLDR: Es wird ein Round Robin System genutzt, bei dem die Zeitscheiben an der Priorität gekoppelt sind. Diese wird aus der Zeit entnommen, die diese für die abarbeitung brauchen.
 
-1. Alle Jobs werden Priorisiert
+* **Interaktive Prozesse** verbrauchen den gesamten Zeitschlitz selten ==> **Priorität bleibt hoch & sie werden bevorzugt**
+* **Rechenintensive Prozesse** verbrauchen gesamten Zeitschlitz oft ==> **Priorität sinkt stetig & sie kommen dann zum Zug, wenn alle anderen blockiert sind!**
+
+1. _Alle Jobs werden Priorisiert_
 
 * Feste Anzahl an Queues, die ein definierten Prioritätslevel repräsentiert.
 * Nur Jobs mit höchster Priorität werden ausgeführt.
 * Scheduler = Round Robin
 
-2. Priorität wechseln
+2. _Priorität wechseln_
 
 * Jeder neue Job beginnt auf höchster Prioritätsstufe
 * Bei nutzung des gesamten Zeitschlitzes, wird die **Priorität abgestuft**
 * Bei nicht nutzung des gesamten Zeitschlitzes, wird die **Priorität behalten**
 
+Probleme:
 
+* Bei vielen interaktiven Prozessen kommen rechenintensive nicht mehr zum Zug(=**Starvation**)
+* Durch `yield()` öfter drankommen
+* Einmal abgestuft immer abgestuft!
+
+Abhilfe durch Prioritätsboost
+
+3. _Prioritäts-Boost_
+
+> Alle Prozesse nach definierter Zeit **S** wieder in höchste Queue eingereiht. Somit kommen auch rechenintensive Prozesse wieder zum Zug.
+
+* Regeln aus 2. werden durch festes Zeitkontingent ausgetauscht um Schumeln zu vermeiden:
+  * Sobald Job Zeitkontingent verbraucht hat, wird er abgestuft
+
+#### Zusammenfassung MLFQ
+
+ <!-- TODO write out -->
+
+![mlfq](./img/mlfq.png)
+
+### Lotterie-Scheduling
+
+> Einfach, simple und fair
+
+* Zuteilung Zeitschlitzes über Lose
+* Wer richtiges Los hat, gewinnt
+* Höhere Priorität = Mehr Lose
+
+Problem: Echter Zufall!

@@ -9,7 +9,21 @@
       - [Dispatcher Loop](#dispatcher-loop)
     + [BS verwaltet Prozesse](#bs-verwaltet-prozesse)
     + [Zusammenfassung CPU - Virtualisierung](#zusammenfassung-cpu---virtualisierung)
-  * [Scheduling](#scheduling) 
+  * [Scheduling](#scheduling)
+    + [FIFO](#fifo)
+    + [SJF](#sjf)
+    + [STCF(Shortest Time to Completion First)](#stcfshortest-time-to-completion-first)
+    + [Round Robin](#round-robin)
+    + [Zusammenhang Reaktionszeit Umlaufzeit](#zusammenhang-reaktionszeit--umlaufzeit)
+    + [MLFQ(Multi-Level-Feedback-Queue)](#mlfqmulti-level-feedback-queue)
+      - [Zusammenfassung MLFQ](#zusammenfassung-mlfq)
+    + [Lotterie-Scheduling](#lotterie-scheduling)
+  * [Persistenz, Dateisysteme & I/O](#persistenz-dateisysteme--io)
+    + [Peripheriegerät(Schnittstelle)](#peripheriegeratschnittstelle)
+    + [Performance](#performance)
+      - [Beispiel](#beispiel)
+    + [Gerätetreiber](#geratetreiber)
+    + [Block-Layer](#block-layer) 
 # Grundlagen betriebssysteme
 
 > Abstrahiert und managet

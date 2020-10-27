@@ -267,7 +267,7 @@ Abhilfe durch Prioritätsboost
 ![mlfq](./img/mlfq.png)
 
 ### Lotterie-Scheduling
-
+ 
 > Einfach, simple und fair
 
 * Zuteilung Zeitschlitzes über Lose
@@ -275,3 +275,52 @@ Abhilfe durch Prioritätsboost
 * Höhere Priorität = Mehr Lose
 
 Problem: Echter Zufall!
+
+## Persistenz, Dateisysteme & I/O
+
+> ein generisches I/O-Device
+
+1. Hardware: Anbindung über diverse Schnittstellen & Bussysteme
+2. Software: BS managet Zugriff
+
+### Peripheriegerät(Schnittstelle)
+
+1. Port-Mapped I/O: Hardware-Register(Ports) liegen in **separaten Adressraum**, der über spezifische I/O-Befehle angesprochen wird. Physisch docken hier die externen Bussysteme an.
+
+* Früher relevant, als Adressraum 16 bzw. 32 bit
+
+2. Memory-Mapped I/O: Hardware-Register aus Sicht des BS **Speicherbereiche im RAM** & könne mit den üblichen Befehlen angesprochen werden(=Teil RAM bleibt reserviert)
+
+### Performance
+
+> Anstelle eines durch BS kontrollierten Datentransfers(PIO) übernimmt spezielle Hardware, die **DMA(Direct Memory Access)**, diese Aufgabe.
+
+==> BS programmiert lediglich **DMA-Controller**(Wie viel Daten von wo nach wo), setzt das Command ab & erwartet Interrupt.
+
+#### Beispiel
+
+> Vorraussetzung: DMA-Controller muss entsprechen programmiert sein = Ziel & Quelladressen definiert, Übertragungsgrößen festgelegt & Interrupts vereinbart.
+
+1. BS sendet Lese-Kommando an Platten-Controller
+2. Platten-Controller initiert DMA-Transfer
+3. DMA-Controller überträgt einzelnen Bytes
+4. Wenn alle Daten übertragen, setzt DMA-Controller Interrupt ab.
+5. BS ist wieder an Reiehe & kopiert Daten an gewünschte Stelle.
+
+### Gerätetreiber
+
+![Filestack](./img/filestack.png)
+
+* Gerätespezifische Software = Treiber.
+* Definerte Schnittstellen für **BS**, um Treiber anzusprechen.
+* Definerte Schnittstellen für **Anwendungen**, um via OS Gerät zu nutzen.
+
+### Block-Layer
+
+> **Kapselt den Zugriff ** auf alle Block-Devices & bietet hierfür **einheitliche Schnittstelle**
+
+* Stellt Schreib-und Lese-Puffer bereit
+  - Mapping in Adressraum des BS
+  - Mapping in den Adressraum der Anwendung
+* Verwaltet logisches Volumen(Untersch. Plattenpartitionen können zu einer logischen zusammengefasst werden)
+* ...

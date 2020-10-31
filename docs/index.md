@@ -23,14 +23,15 @@
     + [Performance](#performance)
       - [Beispiel](#beispiel)
     + [Gerätetreiber](#geratetreiber)
-    + [Block-Layer](#block-layer) 
+    + [Block-Layer](#block-layer)
+
 # Grundlagen betriebssysteme
 
 > Abstrahiert und managet
 
 ![OS](./img/os.png)
 
-## Abstrahiert:
+## Abstrahiert
 
 Standard Bibl. für:
 
@@ -77,7 +78,6 @@ Anwend. gegenseitig nicht stören -> Zuteilung Fair & effektiv! | Wie Abschirmun
 
       ==> Werden im __PCB__ zusammengefasst!
 
-
 Prozess | Programm
 ------- | --------
 Ausfürung des Programms = __Dynamisch__ | __Statisches__ best. aus code & Daten
@@ -92,11 +92,12 @@ Prozess `<!=>` Programm
 
 1. Normale Prozesse -> **User Mode**(Restricted Mode)
 2. BS -> **Kernel Mode**(Priviledged Mode)
-  * Schreiben Geräteregister
-  * Zugriff Memory
-  * Anhalten CPU
-  * Ändern Mode
-  * Aktivierung/Deakt. Interrupts
+
+* Schreiben Geräteregister
+* Zugriff Memory
+* Anhalten CPU
+* Ändern Mode
+* Aktivierung/Deakt. Interrupts
 
       ==> __Protection Ring__(Current Privilege Level) = Prozessor prüft ob Berecht. vorliegen bei jeder Instruktion
 
@@ -122,17 +123,19 @@ Prozess `<!=>` Programm
 ### BS managet Prozesse
 
 1. Mechanismus: Dispatcher
-  * Wie Prozess angehalten?
-  * Wie Prozess gestartet?
+
+* Wie Prozess angehalten?
+* Wie Prozess gestartet?
       2. Strategie: Scheduler
-  * Wann Prozess angehalten?
-  * Mit welchem fortgefahren?
+* Wann Prozess angehalten?
+* Mit welchem fortgefahren?
 
 #### Dispatcher Loop
 
 1. Kooperativer Ansatz: Vertrauen auf Anwendungen
-  * Systemaufruf(I/O) findet regelmäßig statt
-  * `yield()`
+
+* Systemaufruf(I/O) findet regelmäßig statt
+* `yield()`
 
       => Kein Zwang & fehlerhaft
 
@@ -281,7 +284,7 @@ Abhilfe durch Prioritätsboost
 ![mlfq](./img/mlfq.png)
 
 ### Lotterie-Scheduling
- 
+
 > Einfach, simple und fair
 
 * Zuteilung Zeitschlitzes über Lose
@@ -331,7 +334,7 @@ Problem: Echter Zufall!
 
 ### Block-Layer
 
-> **Kapselt den Zugriff ** auf alle Block-Devices & bietet hierfür **einheitliche Schnittstelle**
+> **Kapselt den Zugriff** auf alle Block-Devices & bietet hierfür **einheitliche Schnittstelle**
 
 * Stellt Schreib-und Lese-Puffer bereit
   - Mapping in Adressraum des BS

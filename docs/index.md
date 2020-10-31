@@ -99,13 +99,13 @@ Prozess `<!=>` Programm
 * Ändern Mode
 * Aktivierung/Deakt. Interrupts
 
-      ==> __Protection Ring__(Current Privilege Level) = Prozessor prüft ob Berecht. vorliegen bei jeder Instruktion
+==> __Protection Ring__(Current Privilege Level) = Prozessor prüft ob Berecht. vorliegen bei jeder Instruktion
 
 #### Auf geschützte Funkt. zuzugreifen
 
 > Kontrolle an BS wieder zurückzugeben
 
-* Falltür um auf Kernelebebene abzusteigen = **Trap Konstr.**
+* Falltür um auf Kernelebebene abzusteigen = **Trap Konstruktion**
 * Interface um Funkt. auszuwählen:
 
     ```assembly
@@ -118,32 +118,36 @@ Prozess `<!=>` Programm
     <!-- TODO write out instead of image -->
     ![Vorgang](./img/vorgang.png)
 
-    **Missachtung der Regeln**: BS terminiert Prozess
+    **Missachtung der Regeln** => BS terminiert Prozess
 
 ### BS managet Prozesse
 
-1. Mechanismus: Dispatcher
+1. Mechanismus: **Dispatcher**
 
 * Wie Prozess angehalten?
 * Wie Prozess gestartet?
-      2. Strategie: Scheduler
+
+2. Strategie: **Scheduler**
+
 * Wann Prozess angehalten?
 * Mit welchem fortgefahren?
 
 #### Dispatcher Loop
 
-1. Kooperativer Ansatz: Vertrauen auf Anwendungen
+1. *Kooperativer Ansatz*: Vertrauen auf Anwendungen
 
 * Systemaufruf(I/O) findet regelmäßig statt
 * `yield()`
 
-      => Kein Zwang & fehlerhaft
+=> Kein Zwang & fehlerhaft
 
-      2. Nicht Kooperativ: **Hardware Timer(HPET)** lösen in regelmäßige Abst.(~1ms) Interrupts aus.
+2. *Nicht Kooperativ*: **Hardware Timer(HPET)** lösen in regelmäßige Abst.(~1ms) Interrupts aus.
 
-      ![Interrupt](./img/interrupt.png)
+Vorgang:
 
-      > A process control Block(PCB) is a data structure used by computer operating systems to store all the information about a process. It is also known as a process descriptor.
+![Interrupt](./img/interrupt.png)
+
+> A process control Block(PCB) is a data structure used by computer operating systems to store all the information about a process. It is also known as a process descriptor.
 
 ### BS verwaltet Prozesse
 
@@ -151,11 +155,11 @@ Prozess `<!=>` Programm
 
 ![zustaende](./img/zustaende.png)
 
-1. Initial: Prozess wurde erzeugt
-2. Ready: Prozess ist in der Lage ausgeführt zu werden
-3. Running: Prozess läuft(pro CPU ein Prozess)
-4. Blocked: Prozess wartet auf bestimmtes Ereignis(z.B. I/O)
-5. Final: Prozess beendet -> Es wird aufgeräumt
+1. **Initial**: Prozess wurde *erzeugt*
+2. **Ready**: Prozess ist in der Lage *ausgeführt* zu werden
+3. **Running**: Prozess *läuft*(pro CPU ein Prozess)
+4. **Blocked**: Prozess *wartet* auf bestimmtes Ereignis(z.B. I/O)
+5. **Final**: Prozess *beendet* -> Es wird aufgeräumt
 
 Queues in denen PCB's verwaltet werden:
 
@@ -164,16 +168,16 @@ Queues in denen PCB's verwaltet werden:
 
 ### Zusammenfassung CPU - Virtualisierung
 
-1. Limited direct execution:
+1. **Limited direct execution:**
 
 * Ausfürung bleibt schnell
 * BS behält kontolle
 
-    2. Schnelle Kontextwechsel:
+2. **Schnelle Kontextwechsel:**
 
 * Eindruck als besäße jeder Prozess eigene CPU
 
-    3. Hardware Unterstützung:
+3. **Hardware Unterstützung:**
 
 * Protection Ring
 * Timer & Interrupts
@@ -187,36 +191,38 @@ Queues in denen PCB's verwaltet werden:
 
 Metriken zur Bewertung der Performance:
 
-1. Umlaufzeit: T_Umlauf = T_Ende - T_Ankunft
-2. Reaktionszeit: T_Reaktion = T_Start - T_Ankunft
-3. Durchsatz = (erledigte Aufgaben)/Zeit
+1. **Umlaufzeit**: T_Umlauf = T_Ende - T_Ankunft
+2. **Reaktionszeit**: T_Reaktion = T_Start - T_Ankunft
+3. **Durchsatz** = (erledigte Aufgaben)/Zeit
 
-Berechnung der Fairness, nach Fairness-Index. Je näher dieser bei 1 ist, desto fairer.
+Berechnung der Fairness(Siehe Formel), nach Fairness-Index. Je näher dieser bei 1 ist, desto fairer.
 
 <!-- TODO Fairness formel mit latex -->
 
 ### FIFO
 
-* Performance: Bei etwa gleichlanger Prozess & wenn dursch. Umlaufzeit wichtig ist, FIFO adäquate Strategie.
-* Problem: Dursch. Umlaufzeit steigt stark, wenn kurze Aufträge auf Beendigung langer Aufträge warten müssen.
+> First in, first out
+
+* *Performance*: Bei etwa gleichlangen Prozessen & wenn dursch. Umlaufzeit wichtig ist, FIFO adäquate Strategie.
+* *Problem*: Dursch. Umlaufzeit steigt stark, wenn kurze Aufträge auf Beendigung langer Aufträge warten müssen.
 
 ### SJF
 
-> Dursch. Umlaufzeit minimal gdw. Aufträge nach Dauer von kurz nach lang bearbeitet werden!
+> **Shortest job first**: Dursch. Umlaufzeit minimal gdw. Aufträge nach Dauer von kurz nach lang bearbeitet werden!
 
-* Performance: SJF nur optimal, wenn Aufgaben bereits vorliegen -> Prognosen schwierig!
+* *Performance*: SJF nur optimal, wenn Aufgaben bereits vorliegen -> Prognosen schwierig!
 
 ### STCF(Shortest Time to Completion First)
 
 > Aufgabe, die zuerst fertig wird, wird vorgezogen
 
 * _Präemptiv_: Scheduler kann einen beliebigen Job unterbrechen, um mit einem anderen(ggf. neuen) fortzufahren.
-* Performance: Wenn Dauer Aufgabe bekannt, dursch. Umlaufzeit minimal gdw. stets an Aufgabe weitergearbeitet wird, die zuerst abgeschlossen werden kann.
+* *Performance*: Wenn Dauer Aufgabe bekannt, dursch. Umlaufzeit minimal gdw. stets an Aufgabe weitergearbeitet wird, die zuerst abgeschlossen werden kann.
 
 > Anwender erwartet kurze Reaktionszeit:
 
 * Reaktionszeit(Response Time): T_Reaktion = T_Start - T_Ankunft
-* Performance bzglw. Reaktionszeit: Dursch. Reaktionszeit steigt stark sobald mehrere Prozesse(Jobs) zu bearbeiten sind!
+* Performance bzgl. Reaktionszeit: Dursch. Reaktionszeit steigt stark sobald mehrere Prozesse(Jobs) zu bearbeiten sind!
 
 ### Round Robin
 
@@ -295,18 +301,18 @@ Problem: Echter Zufall!
 
 ## Persistenz, Dateisysteme & I/O
 
-> ein generisches I/O-Device
+> Ein generisches I/O-Device
 
 1. Hardware: Anbindung über diverse Schnittstellen & Bussysteme
 2. Software: BS managet Zugriff
 
 ### Peripheriegerät(Schnittstelle)
 
-1. Port-Mapped I/O: Hardware-Register(Ports) liegen in **separaten Adressraum**, der über spezifische I/O-Befehle angesprochen wird. Physisch docken hier die externen Bussysteme an.
+1. _**Port-Mapped I/O**_: Hardware-Register(Ports) liegen in **separaten Adressraum**, der über spezifische I/O-Befehle angesprochen wird. Physisch docken hier die externen Bussysteme an.
 
 * Früher relevant, als Adressraum 16 bzw. 32 bit
 
-2. Memory-Mapped I/O: Hardware-Register aus Sicht des BS **Speicherbereiche im RAM** & könne mit den üblichen Befehlen angesprochen werden(=Teil RAM bleibt reserviert)
+2. _**Memory-Mapped I/O**_: Hardware-Register aus Sicht des BS **Speicherbereiche im RAM** & könne mit den üblichen Befehlen angesprochen werden(=Teil RAM bleibt reserviert)
 
 ### Performance
 
@@ -322,7 +328,7 @@ Problem: Echter Zufall!
 2. Platten-Controller initiert DMA-Transfer
 3. DMA-Controller überträgt einzelnen Bytes
 4. Wenn alle Daten übertragen, setzt DMA-Controller Interrupt ab.
-5. BS ist wieder an Reiehe & kopiert Daten an gewünschte Stelle.
+5. BS ist wieder an der Reihe & kopiert Daten an gewünschte Stelle.
 
 ### Gerätetreiber
 

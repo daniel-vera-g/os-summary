@@ -347,3 +347,66 @@ Problem: Echter Zufall!
   - Mapping in den Adressraum der Anwendung
 * Verwaltet logisches Volumen(Untersch. Plattenpartitionen können zu einer logischen zusammengefasst werden)
 * ...
+
+## Festplatten
+
+### Interface
+
+> In Sektoren aufgeteilt => Festplatten = Arrays von Sektoren
+
+* Sekt. def. Größe v. 512 Byte
+* Sekt. werden *durchnumeriert(0-n)*
+* Sekt. kan man *atomar* lesen & schreiben
+* Normal auf *mehrere Sekt. gleichzeitig* zugegriffen
+
+### Hardware
+
+![](./img/sektoren.png)
+
+ ![](./img/tracks.png)
+
+ > Man kann auf Sektoren, die nahe beieinanderliegen oder sich im gleichen Zylinder befinden schneller zugreifen.
+ 
+#### Lesen/Schreiben eines Sektors
+
+> T_I/O = T_seek + T_rotation + T_transfer
+
+1. Schreib/Lese-Kopf über richtigem Track positionieren(**seek**)
+2. Warten bis aufgrund d. Rotation d. Sektor sich unter Kopf positioniert hat(**Rotation**)
+3. Daten übertragen(**Transfer**)
+
+##### Seek-Time
+
+> Zeit zum Anfahren + Zeit für Weg zum richtigen Track + Zeit zum Anhalten & Justieren
+
+* T_seek = T_acc + T_move + T_settle
+* Faustregel, für wie vile Tracks übersprungen werden müssen: `T_move ~ 1/3T_move_max(Über ganze Breite)`
+
+##### Rotationsverzögerung
+
+> Dursch. Rotationsverzögerung(Latenzzeit) beträgt bei n Sektoren pro Track
+
+![](./img/rotationsverzögerung.png)
+
+##### Performance
+
+> T_I/O = T_seek + T_rotation + T_transfer
+
+* Seek langsam, Rotation langsam Transfer **sehr schnell!**
+
+==>  **Sequentieller Zugriff** wäre optimal, zufälliges, verteiltes Zugreifen katastrophal
+
+##### Caching/Prefetching
+
+> Um Zugriff zu verbessern, **zusätzlichen Speicher** nutzen
+
+1. Caching(Lesen):
+
+<!-- DOING Slide 161 -->
+
+* 
+
+3. Caching(Schreiben):
+4. Caching(Schreiben):
+5. Caching(Schreiben):
+6. Prefetching:

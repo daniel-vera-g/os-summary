@@ -402,11 +402,86 @@ Problem: Echter Zufall!
 
 1. Caching(Lesen):
 
-<!-- DOING Slide 161 -->
+Bei aktiviertem cache:
 
-* 
+* Daten möglichst aus Cache abgerufen, bevor Plattenzugriff initiiert wird.
+* Falls nicht alle Blöcke im Cache, fehlende von Platte geladen & in Cache transferiert.
+
+Bei deaktiviertem cache:
+
+* Cache nur Transprotmedium & s wird immer auf Platte zugegriffen.
 
 3. Caching(Schreiben):
-4. Caching(Schreiben):
-5. Caching(Schreiben):
-6. Prefetching:
+
+> Alle zu schereibende Daten ladnden zuerst im Cache und sind dann wieder lesend zugreifbar
+
+* Geprüft ob bei Schr. Vorgang aktuelle Daten d. Caches betroffen sind -> Werden gelöscht.
+* Sobald Daten im Cache -> Logisch geschrieben
+
+==> **Firmaware Platte entscheidet wann genau Daten auf Platte geschrieben werden!**
+
+NOTE: *Stromausfall führt zum Datenverlust!*. _**Hybride Platten**_ schützen dabei vor Datenverlust.
+
+4. Prefetching:
+
+> Um unnötig viel Cache-Speicher zu verbrauchen werden intelligente Algorithmen gebraucht
+
+* Werden im Rahmen eines Datenzugriffes einzelne Segmente gelesen, dann weden typyscherweise alle Segmente d. Zylinders eingelesen(Read-Ahead)
+
+## I/O-Scheduling
+
+> In welcher Reihenfolge Aufträge abzuarbeiten
+
+* **Relative position** Daten wichtiger als Größe d. Daten
+
+### FCFS(First come, first serve)
+
+Performance:
+
+* Surface, Zylinder & Sektor bekannt.
+* Seek-Zeit + Latenzzeit ~ 10ms bei Plattenzugriff
+* Transferzeit ~ 5µs -> Vernachlässigbar
+
+![](./img/fcfs.png)
+
+* **Reihenfolge** d. Anfragen entscheidend
+
+==> _Dursch. Umlaufzeit minimal gdw. **Aufträge nach ihrer Dauer(Seek-Time + Latenzzeit) von kurz nach lang bearbeitet werden!**_
+
+### SPTF(Shortest Positioning Time first)
+
+> Aus FCFS Überlegungen, kann das BS diese Strategie nur approximieren
+
+1. Geometrie bekannt? -> **Shortest Seek Time First(SSTF)**
+
+* Reihenfolge wird aufgrund d. *Zylindernummer* festgelegt.
+
+2. Geometrie nicht bekannt? -> **Nearest Block First(NBF)**
+
+* Reihenfolge wird aufgrund v. *Blockadresse* festgelegt
+
+Probleme: Starvation <-> Bei vielen Anfragen, kommen weitentfernte Zugriffe zu kurz!(Fairness???)
+
+### Scheduling(SCAN)
+
+> Addressiert Problem der Starvation
+
+1. Während Schreib/Lese-Kopf von innen nach außen bzw. v. außen nach innen bewegt, wird versucht die untersch. Anfragen zu bedienen.
+2. Sobald Anfrage Segment adressiert, an dem Schreib/Lese-Kopf sich bereits vorbeibewegt hat, muss Anfrage warten, bis Schreib/Lese-Kopf Richtung wieder ändert.
+3. Kopf bewegt sich dabei stets von einem zum anderen Ende.
+
+#### Scheduling(SCAN) Varianten
+
+1. *F-SCAN*(Freeze):
+
+* Anfragen stehen zu Beginn, d. Bewegung fest.
+* Alle Anfragen während d. Bewegung werden gequeuet & erst nach Rückweg bearbeitet.
+
+2. *C-SCAN*(Circular):
+
+* Bewegungsrichtung steht fest.
+* Anfragen nur in einer Richtung bearbeitet.
+* Sobald Ende erreicht, springt Arm zurück & startet von neuem.
+
+<!-- TODO Slide 179 -->
+

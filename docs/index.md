@@ -380,7 +380,7 @@ Problem: Echter Zufall!
 > Zeit zum Anfahren + Zeit für Weg zum richtigen Track + Zeit zum Anhalten & Justieren
 
 * T_seek = T_acc + T_move + T_settle
-* Faustregel, für wie vile Tracks übersprungen werden müssen: `T_move ~ 1/3T_move_max(Über ganze Breite)`
+* Faustregel, für wie viele Tracks übersprungen werden müssen: `T_move ~ 1/3T_move_max(Über ganze Breite)`
 
 ##### Rotationsverzögerung
 

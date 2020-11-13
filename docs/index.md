@@ -523,21 +523,13 @@ Probleme: Starvation <-> Bei vielen Anfragen, kommen weitentfernte Zugriffe zu k
 ### Flash: Speicherhierarchien
 
 1. **Page**: Viele Zellen
-
-* Es kann immer nur eine komplette Page gelesen bzw. geschr. werden (2KiB - 8KiB)
-
+  * Es kann immer nur eine komplette Page gelesen bzw. geschr. werden (2KiB - 8KiB)
 2. **Block**: Mehrere Pages
-
-* Kann immer nur ein kompletter Block gelöscht werden(256KiB - 1MiB)
-
+  * Kann immer nur ein kompletter Block gelöscht werden(256KiB - 1MiB)
 3. **Bank**: Viele Blöcke
-
-* Über Bank erfolgt Zugriff auf einzelne Blöcke & ihre Pages(>> MiB)
-
+  * Über Bank erfolgt Zugriff auf einzelne Blöcke & ihre Pages(>> MiB)
 4. **Die(Wafer)**: Mehrere Banks(Meist 2)
-
-* Auf die Banks eines Dies kann *parallel* zugegriffen werden.
-
+  * Auf die Banks eines Dies kann *parallel* zugegriffen werden.
 1. **Chip**: Vereinigt mehrere Dies in einem Bauteil
 
 ![](./img/flash.png)

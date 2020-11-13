@@ -483,5 +483,194 @@ Probleme: Starvation <-> Bei vielen Anfragen, kommen weitentfernte Zugriffe zu k
 * Anfragen nur in einer Richtung bearbeitet.
 * Sobald Ende erreicht, springt Arm zurück & startet von neuem.
 
-<!-- TODO Slide 179 -->
+## Hardware(SSD)
+
+### SSDs Varianten
+
+1. **Single-Level(SLC)**: In einer Zelle wird ein Bit gespeichert
+
+* **Viele Zellen** mit wenig Bits -> Teuer -> High-End-Produkt
+
+2. **Multi-Level Cell(MLC)**: Zum Teil werden bis zu 3 Bits(8 Untersch. Werte) in einer Zelle kodiert.
+
+* **Wenig Zellen** mit vielen Bits -> Günstig -> Consumer-Produkt
+
+### Flash: Speicherhierarchien
+
+1. **Page**: Viele Zellen
+
+* Es kann immer nur eine komplette Page gelesen bzw. geschr. werden (2KiB - 8KiB)
+
+2. **Block**: Mehrere Pages
+
+* Kann immer nur ein kompletter Block gelöscht werden(256KiB - 1MiB)
+
+3. **Bank**: Viele Blöcke
+
+* Über Bank erfolgt Zugriff auf einzelne Blöcke & ihre Pages(>> MiB)
+
+4. **Die(Wafer)**: Mehrere Banks(Meist 2)
+
+* Auf die Banks eines Dies kann *parallel* zugegriffen werden.
+
+1. **Chip**: Vereinigt mehrere Dies in einem Bauteil
+
+![](./img/flash.png)
+
+### Flash: Operationen
+
+1. **Read**:
+
+* Pages werden als Ganzes gelesen.
+* Positionierung nicht erforderlich.
+* Lediglich Page-Adresse muss bekannt sein.
+* Zugriffzeit sehr schnell
+
+2. **Schreiben**:
+
+* Pages können nicht mit beliebigen Werten beschrieben werden.
+* Man kann nur "1"en in "0"en umwandeln und nicht andersrum
+* Pages eines Blocks nur sequentiell geschrieben
+* Zugriffzeit sehr schnell
+
+3. **Löschen**:
+
+* Löschen nur blockweise möglich
+* Alle Bits au "1" gesetzt
+* Bei zu vielem löschen, geht Speicher kaputt.
+
+Zusammenfassung:
+
+* Schnelleres Lesen & Schreiben, da Mechanik hier nicht so schnell ist.
+* Problematisch, wen für Schreibvorgang Daten gelöscht oder überschrieben werden müssen ==> *Geht nur blockweise & ist teuer!*:
+  * Alle Pages d. Blocks, die erhalten werden müssen, wegkopieren
+  * Block löschen
+  * Page schreiben
+
+==> Wird dies zu oft durchgeführt, wird der Block zerstört!
+
+### Lifecycle eines Blocks
+
+![](./img/lifecycle-block.png)
+
+### Zustände einer Page
+
+> Zum Teil müssen Blöcke gelöscht werden, die noch saubere Seiten enthalten => ungleichmäßiger Verschleiß innerhalb eines Blocks
+
+1. **Clean**
+
+* Page wurde gelöscht & noch nicht beschrieben
+
+2. **Valid**
+
+* Page wurde programmiert(geschrieben) & Inhalt gültig.
+
+
+3. **Invalid**
+
+* Durch schreibvorgang wirde Inhalt der Seite geändert(Neue gültige Seite befindet sich an anderer Stelle).
+
+### Hardware einer SSD
+
+![](./img/hssd.png)
+
+#### Flash Translation Layer
+
+> Übersetzt logische Adressen in physische Zellen(Pages)
+
+Zentrale Aufgabe = **Garbage Collection**:
+
+* Blöcke mit ungültige Seiten werden gelöscht -> Seiten werden typyscherweise aufgrund ihrer Update-Frequenz gruppiert:
+
+1. **Hot**:
+
+* Änderungen *stehen bevor*
+* Verfügen über *viel* ungültige Seiten
+
+2. **Warm**:
+
+ * Änderungen sind *zu erwarten*
+ * Verfügen über *wenige* ungültige Seiten
+
+3. **Cold**:
+
+* Änderungen *eher ausgeschlossen*
+* Verfügen über *kaum ungültige Seiten*
+
+==> *Performance & Lebensdauer* hängt hauptsächlich v. der Qualität d. FTL Algorithmen ab!
+
+> Mehrstufige Verfahren gefragt, da Übersetzen viel Speicherplatz erfordert!
+
+* Wenige Blöcke, die page-wise übersetzt werden
+* Viele Blöcke, die zusammenhängende Adressen beinhalten & blockweise übersetzt werden.
+* Scheduling der Schreibvorgänge durch Betriebssystem kann *unnötiges kopieren ganzer Blöcke redizieren*
+
+## File-System
+
+![](./img/filesystem.png)
+
+### Dateien & Verzeichnisse
+
+> Datei = zusammenhängende Folge v. Bytes, die gelesen & geschr. werden können
+
+Identifizierbar durch:
+
+1. **Inode-Number**
+
+* Eindeutiger Index(pro File-System), der die Dtei identifiziert
+
+2. **Pfad**
+
+* Symbolischer Name, der Datei beginnend vom Wurzelverzeichnis('/') identifiziert.
+
+3. **File Descriptor**
+
+* Nummer, die geöffnete Datei aus Dicht einer Prozesses identifiziert(Verwaltet im wesentlichen die Inode-Nummer plus Offset)
+
+### Inodes
+
+* Meta-Daten typyscherweise separat in Index-Knoten(Inode) verwaltet
+* Wird Datei gelöscht, kann Knoten & Index wiederverwendet werden.
+
+### Verzeichnisse
+
+> Verwaltet Zuordnung der in ihm abgelegten Dateien auf deren Inodes
+
+* Durch `debugfs a_blockdevice` Dateisystem details sehen
+
+### Umgang mit Dateien
+
+1. `creat(path)` & `mkdir(path)`
+
+* Erzeugt eine Inode für Datei bzw. ein Verzeichnis & verbindet sie mit symbolischen Namen
+
+2. `link(name, newName)`
+
+* Erzeugt neuen **Verweis**. Dieselbe Inode ist nun über weiteren Namen adressiert
+
+3. `unlink(name)`
+
+* Löscht Verweis auf Inode.
+* Sobald Inode alle Verweise verliert, kann sie als gelöscht betrachtet werden & wird mit physischen Speicherplatz recycelt
+
+4. `open(path)`
+
+* Ausgehen von akuellem Verzeichnis & dessen Inode wird Inode d. entsprechenden Datei ermittelt
+
+5. `read(path)`
+
+* Über Inode kann auf einzelnen Datenblöcke zugegriffen werdden
+
+6. `write(path, data)`
+
+* Abhängig vom Modus, werden bestehende Blöcke überschrieben oder neue erzeugt und angehängt.
+* Dabei kommt es typyscherweise auch zu Änderungen an der Inode selbst
+
+7. `move(name)`
+
+* Ändert Namen einer Datei bzw. eines Verzeichnisse/Verweis auf Inode
+* Änderungen an Datein können so erfolgen, dass daraus konsistenter Zustand resultiert:
+
+![](./img/ic.png)
+
 

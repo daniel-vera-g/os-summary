@@ -49,7 +49,8 @@
     + [Dateien & Verzeichnisse](#dateien--verzeichnisse)
     + [Inodes](#inodes)
     + [Verzeichnisse](#verzeichnisse)
-    + [Umgang mit Dateien](#umgang-mit-dateien) 
+    + [Umgang mit Dateien](#umgang-mit-dateien)
+
 # Grundlagen betriebssysteme
 
 > Abstrahiert und managet
@@ -391,7 +392,7 @@ Problem: Echter Zufall!
  ![](./img/tracks.png)
 
  > Man kann auf Sektoren, die nahe beieinanderliegen oder sich im gleichen Zylinder befinden schneller zugreifen.
- 
+
 #### Lesen/Schreiben eines Sektors
 
 > T_I/O = T_seek + T_rotation + T_transfer
@@ -523,13 +524,21 @@ Probleme: Starvation <-> Bei vielen Anfragen, kommen weitentfernte Zugriffe zu k
 ### Flash: Speicherhierarchien
 
 1. **Page**: Viele Zellen
-  * Es kann immer nur eine komplette Page gelesen bzw. geschr. werden (2KiB - 8KiB)
+
+* Es kann immer nur eine komplette Page gelesen bzw. geschr. werden (2KiB - 8KiB)
+
 2. **Block**: Mehrere Pages
-  * Kann immer nur ein kompletter Block gelöscht werden(256KiB - 1MiB)
+
+* Kann immer nur ein kompletter Block gelöscht werden(256KiB - 1MiB)
+
 3. **Bank**: Viele Blöcke
-  * Über Bank erfolgt Zugriff auf einzelne Blöcke & ihre Pages(>> MiB)
+
+* Über Bank erfolgt Zugriff auf einzelne Blöcke & ihre Pages(>> MiB)
+
 4. **Die(Wafer)**: Mehrere Banks(Meist 2)
-  * Auf die Banks eines Dies kann *parallel* zugegriffen werden.
+
+* Auf die Banks eines Dies kann *parallel* zugegriffen werden.
+
 1. **Chip**: Vereinigt mehrere Dies in einem Bauteil
 
 ![](./img/flash.png)
@@ -582,7 +591,6 @@ Zusammenfassung:
 
 * Page wurde programmiert(geschrieben) & Inhalt gültig.
 
-
 3. **Invalid**
 
 * Durch schreibvorgang wirde Inhalt der Seite geändert(Neue gültige Seite befindet sich an anderer Stelle).
@@ -606,8 +614,8 @@ Zentrale Aufgabe = **Garbage Collection**:
 
 2. **Warm**:
 
- * Änderungen sind *zu erwarten*
- * Verfügen über *wenige* ungültige Seiten
+* Änderungen sind *zu erwarten*
+* Verfügen über *wenige* ungültige Seiten
 
 3. **Cold**:
 
@@ -689,5 +697,3 @@ Identifizierbar durch:
 * Änderungen an Datein können so erfolgen, dass daraus konsistenter Zustand resultiert:
 
 ![](./img/ic.png)
-
-

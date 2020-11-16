@@ -697,3 +697,41 @@ Identifizierbar durch:
 * Änderungen an Datein können so erfolgen, dass daraus konsistenter Zustand resultiert:
 
 ![](./img/ic.png)
+
+### Datenstrukturen für Dateisystemen
+
+Interface:
+
+![](./img/fs-interface.png)
+
+* Erhalten feste Größe(4 KiB)
+* Blöcke werden als Array organisiert: `{block_0, block_1, block_2, ..., block_n-1}`
+
+=> Pro virtuellem Block 8 physische Segmente
+
+### Layout der Daten
+
+1. *Wenige*: Blöcke für Meta-Daten(Inodes)
+2. *Viele*: Blöcke für Daten(Verzeichnisse und Dateien)
+3. Blöcke für allgemeine Informationen zum Dateisystem:
+  * Superblock(Informationen zum File-System, Anzahl Inode-/Daten-Blöcke, usw.)
+  * Blöcke zur Verwaltung freier und belegter Inode/Daten-Blöcle (Free/Used List)
+
+![](./img/layout.png)
+
+* Oft *mehrere Inodes* im selben Block
+* *Mehrere Blöcke* für Datei gebraucht
+
+### Virtuelle Blöcke & physische Sektoren
+
+> Zuordnung: Inode-Nummer => Block => Sektor
+
+1. **Relativen Blockindex** berechnen: `int rblockIdx = (inodeNumber * sizeof(inode_t)) / sizeof(block_t);`
+2. **Absolute Adresse** bestimmen: `inode_t *inodeAddr = (rblockIdx  *sizeof(block_t)) + &inodeTable`
+3. **Sektor-Adresse** berechnen: `int sector = inodeAddr / sizeof(sector_t);`
+
+### Multi-Level Block Lists
+
+> Start in einer Tabelle werden Adressen in einem Baum verwaltet
+
+

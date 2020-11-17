@@ -722,7 +722,9 @@ Interface:
 * Oft *mehrere Inodes* im selben Block
 * *Mehrere Blöcke* für Datei gebraucht
 
-### Virtuelle Blöcke & physische Sektoren
+### Datenstrukturen für Dateisysteme
+
+#### Virtuelle Blöcke & physische Sektoren
 
 > Zuordnung: Inode-Nummer => Block => Sektor
 
@@ -730,8 +732,37 @@ Interface:
 2. **Absolute Adresse** bestimmen: `inode_t *inodeAddr = (rblockIdx  *sizeof(block_t)) + &inodeTable`
 3. **Sektor-Adresse** berechnen: `int sector = inodeAddr / sizeof(sector_t);`
 
-### Multi-Level Block Lists
+#### Multi-Level Block Lists
 
 > Start in einer Tabelle werden Adressen in einem Baum verwaltet
 
+* Statt in Tabelle, werden Adressen in Baum verwaltet
 
+![](./img/inode.png)
+
+Inode Eigenschaften:
+
+* Größe: 512 Byte
+  * 12 direkte Pointer
+  * 3 indirekte Pointer
+* 1024 Pointer pro Block(Blockgröße 4KiB & 4 Byte pro Pointer)
+* Maximale Größe: 4.4 TB(12 x 4 KiB + 1024 x 4 KiB + 1024 * 4 MiB + 1024 x 4 GiB)
+
+#### Alternative: FAT
+
+> Dateien als Liste verketteter Blöcke
+
+* Meta-Daten auf Verzeichnisebene verwaltet
+* Separate Tabelle zur Speicherung von Pointern
+
+![](./img/fat.png)
+
+![](./img/fat2.png)
+
+### Free-Space Management
+
+#### Bit-Maps
+
+![](./img/bitmaps.png)
+
+<!-- WIP Slide 233 -->

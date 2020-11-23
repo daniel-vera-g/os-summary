@@ -761,8 +761,77 @@ Inode Eigenschaften:
 
 ### Free-Space Management
 
+> Zugriff auf Datei bedeutet exzessiver Random-Read & ggf. Random-Write
+
 #### Bit-Maps
 
 ![](./img/bitmaps.png)
 
-<!-- WIP Slide 233 -->
+#### Verbesserung durch mehr Lokalität
+
+> Block Groups erstellen, bei Dateien in einem Verzeichnis die voneinander abhängen
+
+* Verzeichnis-Daten, Verzeichnis-Inode, File-Inodes & darin adressierten Blöcke möglichst in dieselbe Block-Group
+* Große Dateien in eigenen Block-Group(s)
+
+==> Als Ziel, dass der Block mit direkten Pointern & die darüber adressierten Blöcke in **derselben Block-Group** liegen!
+
+### Konsistentes File-System
+
+> Ziel: Konsistenzsicherung bei Änderung v. Daten & Meta-Daten!
+
+Konzepte:
+
+1. Probleme *lösen* durch **Check-and-Repair**: Inkonsistenzen systematisch gesucht, erkannt und beseitigt(Siehe *fsck*). Dies ist jedoch bei aktueller Plattengöße realistisch nicht mehr machbar.
+2. Probleme vermeiden durch:
+  a) **Write-Ahead(Journaling)**: File-System erhält Log in dem bevorstehenden Änderungen in Form v. Transaktionen protokolliert werden.
+  b) **Copy-on-Write**: Bei Änderung d. Blöcke, werden diese kopiert & zu definiertem Zeitpunkt wird File-System "ausgetauscht"
+
+#### Write-Ahead(Journaling)
+
+![](./img/journaling.png)
+
+1. *Änderungen protokollieren(Journal Write)*: Alle Änderungen an Daten & Meta-Daten, die für CRUD Vorgang notwendig sind, werden im Journal abgelegt & mit **Begin-und End-Block** versehen.
+2. *Änderungen durchgeführen & Aufräumen(Checkpoint & Free)*:
+  * Nach Punkt 1, werden Änderungen ausgeführt
+  * Sobald von **Platten-Controller** bestätigt, kann Journal-Eintrag gelöscht werden
+
+Beim Crash:
+
+1. Während Protokollphase: unkritisch da nicht passiert
+2. Während Änderungen durchgeführt werden: unkritisch, da Journal existiert
+3. Nachdem Änderungen durchgeführt wurden, aber bevor Journal aufgeräumt wurde: unkritisch, da Daten doppelt geschrieben aber Inhalt nicht verändert.
+
+WICHTIG: **REIHENFOLGE** einhalten!
+
+##### Reihenfolge beim Protokollieren
+
+> Beginn & Ende Transaktion werden getrennt
+
+1. **Änderungen protokollieren(Journal Write)**:
+  * Alle Änderungen im Journal abgelegt und mit *Begin-Block* versehen. 
+  * Vorgang *als ganzes, in Teilen und in beliebiger Reihenfolge erfolgen*.
+  * *Plattenkontroller* definiert typyscherweise Reihenfolge
+2. **Änderungen abschließen(Journal Commit)**:
+  * Wenn Änderungen protokolliert sind, wird *End-Block* geschrieben
+  * Entspricht Größe *End-Block* Größe eines Sektors, erfolgt Schreibvorgang aus Sicht Platte "atomar"
+3. **Änderungen durchführen(Checkpoint)**:
+  * Änderungen können zu späterem Zeitpunkt erfolgen.
+  * Änderungen können gesammelt werden
+4. **Journal-Eintrag freigeben(Free)**:
+  * Zu beliebig späterem Zeitpunkt kann Eintrag im Journal freigegeben werden
+  * Lediglich *Reihenfolge* muss bei Freigabe beachtet werdne
+5. **Check-Summen lösen Reihenfolgeproblem**:
+  * Durch Check-Summe auf Begin- & End-Blöcke, kann geprüft werden, ob Journal korrekt ist
+  * Reihenfolge in der es geschrieben werden egal
+
+##### Meta-Data Journaling
+
+1. Daten-Änderungen durchführen, werden jedoch nicht geloggt
+2. Meta-Daten-Änderungen protokollieren
+  * Journal Meta-Data Write
+  * Journal Meta-Data Commit
+3. Meta-Daten-Änderungen durchführen(Checkpoint)
+4. Journal-Eintrag freigeben(Free)
+
+

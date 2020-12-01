@@ -14,7 +14,8 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 ## Acknowledgements
 
-This summary is based on Prof. Dr. Thomas Fuchß lecture and uses graphics from his slides.
+* This summary is based on Prof. Dr. Thomas Fuchß lecture and uses graphics from his slides.
+* The structure is based on the book: [Operating Systems: Three Easy Pieces](http://pages.cs.wisc.edu/~remzi/OSTEP/)
 
 ## License
 

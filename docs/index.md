@@ -834,4 +834,92 @@ WICHTIG: **REIHENFOLGE** einhalten!
 3. Meta-Daten-Änderungen durchführen(Checkpoint)
 4. Journal-Eintrag freigeben(Free)
 
+##### Write-Ahead Journaling
+
+> Das Journal wird durch ein `Revoke` Journal erweitert
+
+* Revoke-Record sorgt dafür, dass nicht alle Änderungen im Falle eines Crashs wdh. werden.
+
+<!-- TODO ausführlicher machen: Siehe Buch -->
+
+
+## Virtualisierung d. Hauptspeichers
+
+### Adressraum
+
+> Jeder Prozess bekommt eigenen Adressraum
+
+![](./img/adressraum.png)
+
+1. Programmcode
+2. Statische Daten: Globale (static) Varibalen, Konstanten,...
+3. Dynamische Daten:
+
+* Heap
+  * Wächst v. oben nach unten
+  * Alles was **bewusst** erzeugt wird(`new` || `malloc`)
+* Stack
+  * Wächst v. unten nach oben
+  * Alles was **unbewusst** erzeugt wird(lokale Varibalen, Übergabeparameter, Rückgabewerte,...)
+
+#### Größe Adressraum
+
+1. Adressgröße bis 32 Bit(4 Byte): Werte bis 2^32 - 1
+2. Adressgröße bis 54 Bit(8 Byte): Werte bis 2^64 - 1
+
+#### Space-Sharing
+
+1. Jeder Prozess bekommt eigenen Anteil am RAM
+2. Während Kontextwechsel verbeleibt Adressraum im RAM
+3. Adressen keine "physische" sondern **"virtuelle"** Adressen
+
+#### Virtualisierung d. Adressraums unter **Limited Direct Execution**
+
+> MMU: Memory Management Unit
+
+Aufgabe des BS: MMU Register so setzen, dass kein Zugriff auf fremde Speicherstellen möglich!
+
+1. Kernel Mode
+* BS kann auf jede Adresse zugreifen
+* BS kann Register in MMU ändern
+2. User Mode
+* Jeder Speicherzugriff geht durch MMU
+
+#### Base-and-Bounds
+
+1. Basisadresse d. physischen Adressraums im *Base-Register* gespeichert(**erste gültige Adresse**)
+2. Größe physischen Adressraums im *Bounds-Register* gespeichert(**erste ungültige Adresse**)
+
+Adress Translation:
+
+![](./img/base-bounds.png)
+
+Nachteile:
+
+1. Kompletter Adressraum liegt immer im Hauptspeicher
+2. Das meiste wird fast nie genutzt
+3. Läuft Programm parallel, gibt es mehrere Ausprägungen d. gleichen Adressraums
+
+#### Segmentation
+
+> Jedes Segment bekommt eigene Abbildung mit Base-und Bound-Register
+
+* Dynamische Anpassung d. Größe v. Heap & Stack
+* Sharing v. Segmenten & Aufrechterhaltung d. Schutzes durch Protection-Bits(R-W-X)
+
+##### Segment übersetzung
+
+> Übersetzung einer virtuellen Adresse in physische Adresse
+
+![v](./img/virtad.png)
+
+1. Segment identifizieren
+
+* Druch virtuelle Adresse identifiziert
+
+2. Base addieren
+3. Bounds prüfen
+4. Berechtigungen prüfen
+
+
 

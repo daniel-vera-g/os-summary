@@ -2,6 +2,8 @@
 
 > Summary for the operating systems class at the University of Applied Sciences Karlsruhe(In German)
 
+> **NOTE: This summary is not complete**
+
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
